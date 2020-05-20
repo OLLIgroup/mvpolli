@@ -11,5 +11,4 @@ class SaleOrder(models.Model):
 
     def create_invoices(self):
         invoice_id = self._create_invoices().id
-        _logger.info(_(invoice_id))
         return invoice_id
