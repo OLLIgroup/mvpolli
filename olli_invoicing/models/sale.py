@@ -7,6 +7,6 @@ class SaleOrder(models.Model):
 
     def create_invoices(self):
         for order in self:
-            order._create_invoices()
+            invoice = order._create_invoices()
 
-        return True
+        return invoice
