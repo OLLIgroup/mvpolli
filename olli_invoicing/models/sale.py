@@ -14,7 +14,7 @@ class SaleOrder(models.Model):
         self.env['account.move'].search([('id','=',invoice_id)]).action_post()
         payment = self.env['account.payment.register'].create({
             'journal_id': 1,
-            'payment_method_id': "Manual",
+            'payment_method_id': 1,
             'invoice_ids': [invoice_id]
         })
         payment.create_payments()
