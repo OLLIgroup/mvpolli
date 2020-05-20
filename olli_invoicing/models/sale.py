@@ -10,7 +10,6 @@ class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
     def create_invoices(self):
-
-        _logger.info(_(self._create_invoices()))
-
-        return self._create_invoices()
+        invoice_id = self._create_invoices().id
+        _logger.info(_(invoice_id))
+        return invoice_id
