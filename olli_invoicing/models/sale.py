@@ -6,4 +6,4 @@ class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
     def create_invoices(self):
-        return _create_invoices()
+        return self._create_invoices()
