@@ -11,5 +11,5 @@ class SaleOrder(models.Model):
 
     def create_invoices(self):
         invoice_id = self._create_invoices().id
-        _logger.info(_(invoice_id))
+        self.env['account.move'].search([('id','=',invoice_id)]).action_post()
         return invoice_id
