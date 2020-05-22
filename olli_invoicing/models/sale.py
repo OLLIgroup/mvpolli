@@ -23,7 +23,7 @@ class SaleOrder(models.Model):
         composer = self.env['mail.compose.message'].create({
             'composition_mode': 'comment',
         })
-        invoice_send = self.env['account.payment.register'].create({
+        invoice_send = self.env['account.invoice.send'].create({
             'is_email': True,
             'invoice_ids': [invoice_id],
             'composer_id': composer.id,
