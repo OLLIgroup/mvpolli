@@ -19,5 +19,15 @@ class SaleOrder(models.Model):
         })
         payment.create_payments()
         template_id = self.env.ref('account.email_template_edi_invoice')
-        template_id.send_mail(invoice_id)
+        # template_id.send_mail(invoice_id, force_send=True)
+        composer = self.env['mail.compose.message'].create({
+            'composition_mode': 'comment',
+        })
+        invoice_send = self.env['account.payment.register'].create({
+            'is_email': True,
+            'invoice_ids': [invoice_id],
+            'composer_id': composer.id,
+            'template_id': template_id
+        })
+        invoice_send._send_email()
         return invoice_id
