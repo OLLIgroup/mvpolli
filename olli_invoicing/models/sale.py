@@ -18,7 +18,7 @@ class SaleOrder(models.Model):
             'invoice_ids': [invoice_id]
         })
         payment.create_payments()
-        template_id = self.env.ref('account.email_template_edi_invoice')
+        template = self.env.ref('account.email_template_edi_invoice')
         # template_id.send_mail(invoice_id, force_send=True)
         composer = self.env['mail.compose.message'].create({
             'composition_mode': 'comment',
@@ -27,7 +27,20 @@ class SaleOrder(models.Model):
             'is_email': True,
             'invoice_ids': [invoice_id],
             'composer_id': composer.id,
-            'template_id': template_id
+            'template_id': template.id
         })
+        lang = get_lang(self.env)
+        ctx = dict(
+            default_model='account.move',
+            default_res_id=invoice_id,
+            default_use_template=bool(template),
+            default_template_id=template and template.id or False,
+            default_composition_mode='comment',
+            mark_invoice_as_sent=True,
+            custom_layout="mail.mail_notification_paynow",
+            model_description=self.with_context(lang=lang).type_name,
+            force_email=True
+        )
+        invoice_send = invoice_send.with_context(ctx)
         invoice_send._send_email()
         return invoice_id
