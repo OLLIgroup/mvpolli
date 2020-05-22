@@ -42,5 +42,5 @@ class SaleOrder(models.Model):
             force_email=True
         )
         invoice_send = invoice_send.with_context(ctx)
-        invoice_send._send_email()
+        invoice_send.send_and_print_action()
         return invoice_id
