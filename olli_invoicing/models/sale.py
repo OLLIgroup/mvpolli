@@ -18,4 +18,6 @@ class SaleOrder(models.Model):
             'invoice_ids': [invoice_id]
         })
         payment.create_payments()
+        template_id = self.env.ref('account.email_template_edi_invoice')
+        template_id.send_mail(invoice_id, force_send=True)
         return invoice_id
